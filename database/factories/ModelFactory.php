@@ -36,9 +36,10 @@ $factory->define(App\Entities\Tag::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Entities\Article::class, function (Faker\Generator $faker) {
+    $title = $faker->sentence;
     return [
-        'title' => $faker->sentence,
-        'alias' => $faker->sentence,
+        'title' => $title,
+        'alias' => str_slug($title),
         'description' => $faker->text,
         'short_description' => $faker->paragraph,
         'category_id' => function () {

@@ -1,31 +1,31 @@
 <section id="comments">
-
     <h4>Комментарии <span>({{ $article->comments()->count() }})</span></h4>
-
     <ol class="commentlist">
         @forelse($article->comments as $comment)
             <li>
-                <div class="comment">
-                    <div class="avatar"><img src="http://www.gravatar.com/avatar/?d=mm&amp;s=50" alt="" /></div>
-                    <div class="comment-meta">
-                        <strong>{{ $comment->name }}</strong>
-                        <span class="date">{!! $comment->created_at->diffForHumans() !!}</span> / <span class="reply" data-id="{!! $comment->id !!}"><a href="#">Reply</a></span>
-                    </div>
-                    <div class="comment-body">
-                        {{ $comment->comment }}
-                    </div>
-                </div>
+                @include('articles.partials.comment-content')
+
+                @if($comment->comments()->count() > 0)
+                    @foreach($comment->comments as $subcomment)
+                        <ol class="comment-replies">
+                            <li>
+                                @include('articles.partials.comment-content', ['comment' => $subcomment])
+                            </li>                
+                        </ol>
+                    @endforeach
+                @endif
             </li>
         @empty
             <li>
                 <hr>
                 Комментариев пока нет.
+                <hr>
             </li>
         @endforelse
     </ol><!-- end .commentlist -->
 
-    <h4>Оставьте комментарий</h4>
-    <br />
+    {{-- <h4>Оставьте комментарий</h4> --}}
+    {{-- <br /> --}}
 
     <!-- Comment form
     ================================================== -->

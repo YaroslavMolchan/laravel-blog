@@ -17,60 +17,37 @@ class ArticlesController extends Controller
     /**
      * @var ArticleRepository
      */
-    private $article;
+    private $articles;
     /**
      * @var CategoryRepository
      */
-    private $category;
+    private $categories;
     /**
      * @var TagRepository
      */
-    private $tag;
+    private $tags;
 
-    public function __construct(ArticleRepository $article, CategoryRepository $category, TagRepository $tag)
+    public function __construct(ArticleRepository $articles, CategoryRepository $categories, TagRepository $tags)
     {
-        $this->article = $article;
-        $this->category = $category;
-        $this->tag = $tag;
+        $this->articles = $articles;
+        $this->categories = $categories;
+        $this->tags = $tags;
 
         $this->middleware('auth')->only(['create', 'update']);
     }
 
     public function index(Request $request)
     {
-        $url = '/api/articles/';
-        if ($request->input('query')) {
-            $url = '/api/articles/?query=' . $request->input('query');
-        }
+        $articles = $this->articles->orderBy('published_at', 'DESC')->paginate(10);
 
-        if ($request->is('api/*')) {
-            $this->article->pushCriteria(FilterCriteria::class);
-            $articles = $this->article->with(['comments'])->orderBy('created_at', 'DESC')->paginate(10);
-
-            return response()->json([
-                'data' => $articles,
-            ]);
-        }
-        \JavaScript::put(['itemsUrl' => $url]);
-
-        return view('articles.index');
-    }
-
-    public function search()
-    {
-        $this->article->pushCriteria(new SearchCriteria(request()->input('query')));
-        $articles = $this->article->all();
-
-        return response()->json([
-            'data' => $articles,
-        ]);
+        return view('articles.index', compact('articles'));
     }
 
     public function create()
     {
         $submitButtonText = 'Create';
-        $categories = $this->category->pluck('name', 'id');
-        $tags = $this->tag->pluck('name', 'id');
+        $categories = $this->categories->pluck('name', 'id');
+        $tags = $this->tags->pluck('name', 'id');
 
         return view('articles.create', compact('submitButtonText', 'categories', 'tags'));
     }
@@ -84,25 +61,23 @@ class ArticlesController extends Controller
 
     public function show($id, $slug)
     {
-        $article = $this->article->find($id);
-        if (is_null($article)) {
-            abort(404, 'Запись не найдена.');
-        }
-//        PHP7 preg_match bag
-//        $article->description = preg_replace_callback('/<pre class="(.+?)">((\s|.)*?)<\/pre>/m', function($matches){
-//            return "<pre class=\"line-numbers\"><code class=\"$matches[1]\">$matches[2]</code></pre>";
-//        }, $article->description);
-        $article->description = str_replace(['<pre data-code="true" class="', '</pre>'], ['<pre class="line-numbers"><code class="', '</code></pre>'], $article->description);
+        $article = $this->articles->find($id);
+
+        $article->description = str_replace(
+            ['<pre data-code="true" class="', '</pre>'], 
+            ['<pre class="line-numbers"><code class="', '</code></pre>'], 
+            $article->description
+        );
         return view('articles.show', compact('article'));
     }
 
     public function edit($id)
     {
-        $article = $this->article->find($id);
+        $article = $this->articles->find($id);
         $article->tags_id = $article->tags()->pluck('id')->toArray();
         $submitButtonText = 'Update';
-        $categories = $this->category->pluck('name', 'id');
-        $tags = $this->tag->pluck('name', 'id');
+        $categories = $this->categories->pluck('name', 'id');
+        $tags = $this->tags->pluck('name', 'id');
 
         return view('articles.edit', compact('submitButtonText', 'article', 'categories', 'tags'));
     }
@@ -116,7 +91,7 @@ class ArticlesController extends Controller
 
     public function destroy($id)
     {
-        $deleted = $this->article->delete($id);
+        $deleted = $this->articles->delete($id);
 
         if (request()->wantsJson()) {
 

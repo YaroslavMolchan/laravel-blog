@@ -3,13 +3,9 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
-class ArticlesComment extends Model implements Transformable
+class ArticlesComment extends Model
 {
-    use TransformableTrait;
-
     protected $fillable = [
     	'article_id',
     	'name',
@@ -17,7 +13,8 @@ class ArticlesComment extends Model implements Transformable
     	'comment',
     	'ip',
     	'ua',
-    	'status'
+    	'status',
+        'parent_id'
     ];
 
 	public function aricle()
@@ -25,4 +22,8 @@ class ArticlesComment extends Model implements Transformable
         return $this->belongsTo(Article::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(ArticlesComment::class, 'id', 'parent_id');
+    }
 }
