@@ -1,6 +1,6 @@
 @if(!is_null($article->image))
     <a href="{!! route('articles.show', ['id' => $article->id, 'slug' => $article->alias]) !!}" class="entry-media">
-        <img src="{!! \Storage::url('$article->image') !!}" alt="{!! $article->title !!}" />
+        <img src="{!! \Storage::url($article->image) !!}" alt="{!! $article->title !!}" />
     </a>
 @endif
 {{--<div style="margin-bottom: 20px; margin-top: 10px">--}}
