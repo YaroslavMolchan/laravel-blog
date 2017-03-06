@@ -4,7 +4,7 @@
 <article class="post single-post text-post">
  	@if($article->image)
 		<a href="{!! route('articles.show', ['id' => $article->id, 'slug' => $article->alias]) !!}" class="entry-media">
-			<img src="{!! \Storage::url('$article->image') !!}" alt="" />
+			<img src="{!! \Storage::url($article->image) !!}" alt="" />
 		</a>
 	@endif
 	<div style="margin-bottom: 20px; margin-top: 10px">
