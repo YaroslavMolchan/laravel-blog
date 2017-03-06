@@ -1,7 +1,7 @@
 <section id="comments">
     <h4>Комментарии <span>({{ $article->comments()->count() }})</span></h4>
     <ol class="commentlist">
-        @forelse($article->comments as $comment)
+        @forelse($article->mainComments() as $comment)
             <li>
                 @include('articles.partials.comment-content')
 

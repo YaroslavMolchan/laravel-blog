@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Criteria;
+namespace App\Criteria\Articles;
 
-use App\Entities\Article;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterCriteria
+ * Class SortByCategoryCriteria
  * @package namespace App\Criteria;
  */
-class FilterCriteria implements CriteriaInterface
+class SortByCategoryCriteria implements CriteriaInterface
 {
     /**
      * @author MY
@@ -38,14 +37,10 @@ class FilterCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        if ($this->category_id) {
-            $model->where('category_id', $this->category_id);
+        //L5-Repository bag, need to return query to $model if i don`t use with or something like this
+        if (!is_null($this->category_id)) {
+            $model = $model->where('category_id', $this->category_id);
         }
-//        $tag_id = request()->input('tag');
-//        if ($tag_id) {
-//            $model->where('tag_id', $tag_id);
-//        }
-        $model->where('status', Article::STATUS_PUBLISHED);
         return $model;
     }
 }

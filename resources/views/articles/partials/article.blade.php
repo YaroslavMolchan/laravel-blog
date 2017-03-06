@@ -3,7 +3,8 @@
         <img src="{!! \Storage::url('$article->image') !!}" alt="{!! $article->title !!}" />
     </a>
 @endif
-<div style="margin-bottom: 20px; margin-top: 10px">
+{{--<div style="margin-bottom: 20px; margin-top: 10px">--}}
+<div class="post">
     <!-- entry body -->
     <div class="entry-body pull-left">
         <a href="{!! route('articles.show', ['id' => $article->id, 'slug' => $article->alias]) !!}">
@@ -16,7 +17,7 @@
     <div class="entry-meta pull-right">
         {{--<span class="entry-type"></span>--}}
         <span class="entry-date">{!! $article->published_at->diffForHumans() !!}</span>
-        <span class="entry-comments">{!! $article->comments()->count() !!} комментариев</span>
+        <span class="entry-comments">{!! $article->comments_count !!} комментариев</span>
     </div>
 
     <div class="clr"></div>

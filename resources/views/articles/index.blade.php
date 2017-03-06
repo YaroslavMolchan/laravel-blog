@@ -6,7 +6,6 @@
     @empty
         Записи не найдены
     @endforelse
-
     <hr>
     {!! $articles->links() !!}
 @endsection

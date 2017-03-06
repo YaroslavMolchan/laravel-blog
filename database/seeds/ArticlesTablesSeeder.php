@@ -11,6 +11,10 @@ class ArticlesTablesSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Entities\Article::class, 10)->create();
+        factory(App\Entities\Article::class, 20)
+            ->create()
+            ->each(function ($a) {
+                $a->tags()->save(factory(App\Entities\Tag::class)->make());
+            });
     }
 }

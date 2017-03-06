@@ -48,4 +48,9 @@ class Article extends Model
     {
         return $this->hasMany(ArticlesComment::class);
     }
+
+    public function mainComments()
+    {
+        return $this->comments()->where('parent_id', null)->get();
+    }
 }

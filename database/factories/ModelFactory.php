@@ -48,6 +48,7 @@ $factory->define(App\Entities\Article::class, function (Faker\Generator $faker) 
         'user_id' => function () {
             return factory(App\Entities\User::class)->create()->id;
         },
+        'published_at' => \Carbon\Carbon::now(),
         'status' => App\Entities\Article::STATUS_PUBLISHED
     ];
 });

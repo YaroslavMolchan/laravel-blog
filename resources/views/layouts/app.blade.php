@@ -110,7 +110,7 @@
                 @inject('sidebar', 'App\Services\SidebarDataService')
                 <!-- search plugin -->
                 <div class="widget">
-                    <form class="form-search">
+                    <form class="form-search" action="{!! route('articles.search') !!}">
                         <div class="input-append">
                             <input id="main_search" type="search" name="query" class="span2 search-query animated">
                             <button type="submit" class="btn">Search</button>
@@ -126,7 +126,7 @@
 
                 <!-- Categories -->
                 <div class="widget">
-                    <h4>Categories</h4>
+                    <h4>Категории</h4>
                     <ul class="icons-ul list-style">
                         @forelse($sidebar->categories() as $category)
                             <li><a href="{!! route('categories.show', ['id' => $category->id]) !!}"><i
@@ -139,7 +139,7 @@
 
                 <!-- Tags -->
                 <div class="widget">
-                    <h4>Tags</h4>
+                    <h4>Теги</h4>
                     <ul class="tags">
                         @forelse($sidebar->tags() as $tag)
                             <li><a href="{!! route('tags.show', ['id' => $tag->id]) !!}">{!! $tag->name !!}</a></li>

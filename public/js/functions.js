@@ -73,21 +73,9 @@ jQuery(document).ready(function(e) {
     (function() {
         e("#contact-form-submit").data("original-text", e("#contact-form-submit").html());
         e("#contact-form-submit").click(function(t) {
-            var n = e("#contact-form").serialize();
-            e("#contact-form-submit").addClass("disabled").html("Sending ...");
-            setTimeout(function() {
-                e("#contact-form-response").hide().attr("class", "alert");
-                e.post("/subscribe/create", n, function(t) {
-                    e("#contact-form-submit").removeClass("disabled").html(e("#contact-form-submit").data("original-text"));
-                    if (t.ok == true) {
-                        e("#contact-form-response").addClass("alert-success");
-                    } else {
-                        e("#contact-form-response").addClass("alert-warning");
-                    }
-                    e("#contact-form-response").show().html(t.message);
-                }, "json")
-            }, 300)
-        })
+            t.preventDefault();
+            t(this).closest('#newsletter-form').submit();
+        });
     })();
     (function() {
         e("#newsletter-form").submit(function(t) {
@@ -98,12 +86,9 @@ jQuery(document).ready(function(e) {
                 e.post("/subscribe/create", n, function(t) {
                     e(".newsletter .ajax-loader").hide();
                     if (t.ok == true) {
-                        e("#newsletter-form").html("&#10004; " + t.message);
-                        e("#newsletter-form").show()
+                        e("#newsletter-form").show().html("&#10004; " + t.message);
                     } else {
-                        e("#newsletter-form").html("&#10004; " + t.message);
-                        e("#newsletter-form").show();
-                        console.log(t.errors);
+                        e("#newsletter-form").show().html("&#215; " + t.message);
                     }
                 }, "json")
             }, 600);

@@ -174,6 +174,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Orchestra\Imagine\ImagineServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
+        Clockwork\Support\Laravel\ClockworkServiceProvider::class,
 
         /*
          * Application Service Providers...

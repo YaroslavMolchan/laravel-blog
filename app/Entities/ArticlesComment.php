@@ -24,6 +24,6 @@ class ArticlesComment extends Model
 
     public function comments()
     {
-        return $this->hasMany(ArticlesComment::class, 'id', 'parent_id');
+        return $this->hasMany(ArticlesComment::class, 'parent_id', 'id');
     }
 }

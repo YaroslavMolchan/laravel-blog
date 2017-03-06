@@ -1,26 +1,17 @@
 <?php
 
-namespace App\Criteria;
+namespace App\Criteria\Articles;
 
-use Illuminate\Http\Request;
+use App\Entities\Article;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class SearchCriteria
- * @property Request request
+ * Class MainCriteria
  * @package namespace App\Criteria;
  */
-class SearchCriteria implements CriteriaInterface
+class MainCriteria implements CriteriaInterface
 {
-
-    protected $query;
-
-    public function __construct(string $query = null)
-    {
-        $this->query = $query;
-    }
-
     /**
      * Apply criteria in query repository
      *
@@ -31,9 +22,9 @@ class SearchCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        if (!is_null($this->query)) {
-            $model = $model->search($this->query);
-        }
+        $model = $model->where('status', Article::STATUS_PUBLISHED);
+        $model = $model->orderBy('published_at', 'DESC');
+        $model = $model->withCount('comments');
         return $model;
     }
 }

@@ -15,19 +15,21 @@ Auth::routes();
 
 Route::get('/', 'ArticlesController@index')->name('articles.index');
 Route::get('/{id}/{slug}', 'ArticlesController@show')->where('id', '[0-9]+')->name('articles.show');
+Route::get('/search', 'ArticlesController@search')->name('articles.search');
 
 Route::resource('articles', 'ArticlesController', [
     'except' => ['show', 'index']
 ]);
 
-Route::resource('comments', 'CommentsController');
+Route::resource('comments', 'CommentsController', [
+    'only' => ['store', 'update']
+]);
+
 Route::resource('categories', 'CategoriesController', [
     'only' => ['show']
 ]);
 Route::resource('tags', 'TagsController');
 
-
-//Route::get('/category/{id}', 'ArticlesController@index')->where('id', '[0-9]+');
 Route::post('/subscribe/create', 'SubscribeController@create');
 
 //Article form editor actions

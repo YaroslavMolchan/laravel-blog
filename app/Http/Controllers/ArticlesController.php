@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Criteria\FilterCriteria;
-use App\Criteria\SearchCriteria;
+use App\Criteria\Articles\MainCriteria;
+use App\Criteria\Articles\SearchCriteria;
+use App\Entities\Article;
 use App\Http\Requests\ArticlesCreateUpdateRequest;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use Illuminate\Http\Request;
-
 
 class ArticlesController extends Controller
 {
@@ -36,9 +36,21 @@ class ArticlesController extends Controller
         $this->middleware('auth')->only(['create', 'update']);
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $articles = $this->articles->orderBy('published_at', 'DESC')->paginate(10);
+        $this->articles->pushCriteria(MainCriteria::class);
+        $articles = $this->articles->paginate(10);
+        $a = Article::paginate(10);
+
+        return view('articles.index', compact('articles', 'a'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $this->articles->pushCriteria(MainCriteria::class);
+        $this->articles->pushCriteria(new SearchCriteria($query));
+        $articles = $this->articles->paginate(10);
 
         return view('articles.index', compact('articles'));
     }

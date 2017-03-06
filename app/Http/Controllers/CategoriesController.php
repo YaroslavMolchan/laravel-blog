@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Criteria\Articles\MainCriteria;
+use App\Criteria\Articles\SortByCategoryCriteria;
 use App\Criteria\FilterCriteria;
 use App\Http\Requests\CategoriesUpdateRequest;
 use App\Repositories\ArticleRepository;
@@ -19,18 +21,18 @@ class CategoriesController extends Controller
      * @author MY
      * @var ArticleRepository
      */
-    private $article;
+    private $articles;
 
     /**
      * @author MY
      * CategoriesController constructor.
      * @param CategoryRepository $repository
-     * @param ArticleRepository $article
+     * @param ArticleRepository $articles
      */
-    public function __construct(CategoryRepository $repository, ArticleRepository $article)
+    public function __construct(CategoryRepository $repository, ArticleRepository $articles)
     {
         $this->repository = $repository;
-        $this->article = $article;
+        $this->articles = $articles;
         $this->middleware('auth')->only(['create', 'update']);
     }
 
@@ -39,26 +41,16 @@ class CategoriesController extends Controller
      *
      * @param  int $id
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show($id)
     {
-        $url = '/api/categories/'.$id;
+        $this->articles->pushCriteria(MainCriteria::class);
+        $this->articles->pushCriteria(new SortByCategoryCriteria($id));
+        $articles = $this->articles->paginate(10);
 
-        if ($request->is('api/*')) {
-            $this->article->pushCriteria(new FilterCriteria($id));
-            $articles = $this->article->with(['comments'])->orderBy('created_at', 'DESC')->paginate(10);
-
-            return response()->json([
-                'data' => $articles,
-            ]);
-        }
-        \JavaScript::put(['itemsUrl' => $url]);
-
-        return view('articles.index');
+        return view('articles.index', compact('articles'));
     }
-
 
     /**
      * Show the form for editing the specified resource.
