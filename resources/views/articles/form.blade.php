@@ -47,14 +47,14 @@
     <button type="submit" class="button yellow"><i class="icon-ok"></i> {!! $submitButtonText !!}</button>
 </div>
 
-@section('styles')
+@push('styles')
     @parent
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
     <link href="/css/redactor.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="/css/imgreaselect/imgareaselect-default.css"/>
-@stop
+@endpush
 
-@section('scripts')
+@push('scripts')
     <script type="text/javascript" src="/js/articles.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
     <script src="/js/imperavi/redactor.js"></script>
@@ -122,4 +122,4 @@
             });
         });
     </script>
-@stop
+@endpush
