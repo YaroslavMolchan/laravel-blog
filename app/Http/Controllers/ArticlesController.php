@@ -40,9 +40,8 @@ class ArticlesController extends Controller
     {
         $this->articles->pushCriteria(MainCriteria::class);
         $articles = $this->articles->paginate(10);
-        $a = Article::paginate(10);
 
-        return view('articles.index', compact('articles', 'a'));
+        return view('articles.index', compact('articles'));
     }
 
     public function search(Request $request)

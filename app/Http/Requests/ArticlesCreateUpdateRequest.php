@@ -89,7 +89,7 @@ class ArticlesCreateUpdateRequest extends FormRequest
         $tags_id = [];
         foreach ($this->tags_id as $id) {
             if (!ctype_digit($id)) {
-                $id = $this->tag->create(['name' => $id])->id;
+                $id = $this->tag->updateOrCreate(['name' => $id])->id;
             }
             array_push($tags_id, $id);
         }

@@ -21,6 +21,10 @@ Route::resource('articles', 'ArticlesController', [
     'except' => ['show', 'index']
 ]);
 
+Route::resource('books', 'BooksController', [
+    'except' => ['show']
+]);
+
 Route::resource('comments', 'CommentsController', [
     'only' => ['store', 'update']
 ]);
