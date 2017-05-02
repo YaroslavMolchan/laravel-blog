@@ -1,7 +1,7 @@
 <article class="member">
     <h3 class="member-name">
         @if(!empty($book->link))
-            <a href="{!! $book->title !!}" target="_blank">{!! $book->title !!}</a>
+            <a href="{!! $book->link !!}" target="_blank">{!! $book->title !!}</a>
         @else
             {!! $book->title !!}
         @endif
