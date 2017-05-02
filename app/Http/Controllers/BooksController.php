@@ -26,11 +26,13 @@ class BooksController extends Controller
     {
         $this->books = $books;
         $this->authors = $authors;
+
+        $this->middleware('auth')->only(['create']);
     }
 
     public function index()
     {
-        $books = $this->books->paginate(10);
+        $books = $this->books->orderBy('created_at', 'DESC')->paginate(10);
         $page_description = 'Список прочитанных книг';
         return view('books.index', compact('books', 'page_description'));
 
