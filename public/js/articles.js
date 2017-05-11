@@ -29,7 +29,7 @@
                 processData: false
             })
             .done(function() {
-                this.form[0].submit();
+              window.location = '/';
             })
             .fail(function(response) {
                 response = JSON.parse(response);
