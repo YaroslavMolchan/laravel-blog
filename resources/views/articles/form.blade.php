@@ -48,7 +48,6 @@
 </div>
 
 @push('styles')
-    @parent
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
     <link href="/css/redactor.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="/css/imgreaselect/imgareaselect-default.css"/>

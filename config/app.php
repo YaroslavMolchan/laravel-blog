@@ -175,6 +175,7 @@ return [
         Orchestra\Imagine\ImagineServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...
