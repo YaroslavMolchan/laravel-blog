@@ -19,7 +19,7 @@
             <div class="widget">
                 <form class="form-search" action="{!! route('articles.search') !!}">
                     <div class="input-append">
-                        <input id="main_search" type="search" name="query" class="span2 search-query animated">
+                        <input id="main_search" type="search" name="query" class="span2 search-query animated" value="{!! request()->query('query') !!}">
                         <button type="submit" class="btn">Search</button>
                         {{--<div class="autocomplete-suggestions"></div>--}}
                     </div>

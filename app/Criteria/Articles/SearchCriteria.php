@@ -2,6 +2,7 @@
 
 namespace App\Criteria\Articles;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
@@ -24,10 +25,10 @@ class SearchCriteria implements CriteriaInterface
     /**
      * Apply criteria in query repository
      *
-     * @param                     $model
+     * @param Builder $model
      * @param RepositoryInterface $repository
      *
-     * @return mixed
+     * @return Builder
      */
     public function apply($model, RepositoryInterface $repository)
     {
@@ -38,6 +39,7 @@ class SearchCriteria implements CriteriaInterface
                     ->orWhere('short_description', 'ilike', '%'.$this->query.'%');
             });
         }
+
         return $model;
     }
 }

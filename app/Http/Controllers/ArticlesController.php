@@ -79,14 +79,18 @@ class ArticlesController extends Controller
             ['<pre class="line-numbers"><code class="', '</code></pre>'], 
             $article->description
         );
+
         return view('articles.show', compact('article'));
     }
 
     public function edit($id)
     {
         $article = $this->articles->find($id);
+
         $article->tags_id = $article->tags()->pluck('id')->toArray();
+
         $submitButtonText = 'Update';
+
         $categories = $this->categories->pluck('name', 'id');
         $tags = $this->tags->pluck('name', 'id');
 
@@ -107,11 +111,11 @@ class ArticlesController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'Articles deleted.',
+                'message' => 'Article deleted.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect()->back()->with('message', 'Articles deleted.');
+        return redirect()->back()->with('message', 'Article deleted.');
     }
 }

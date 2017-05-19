@@ -27,6 +27,8 @@ class ArticlesCreateUpdateRequest extends FormRequest
     {
         $this->article = $article;
         $this->tag = $tag;
+
+        parent::__construct();
     }
 
     /**
@@ -57,8 +59,10 @@ class ArticlesCreateUpdateRequest extends FormRequest
     }
 
     public function persist($id = null) {
-        $data = $this->all();
+        $data = $this->except('_token', 'tags_id');
+
         $data['alias'] = str_slug($data['title']);
+
         if (isset($data['is_publish'])) {
             $data['status'] = Article::STATUS_PUBLISHED;
             $data['published_at'] = Carbon::now();
@@ -67,6 +71,7 @@ class ArticlesCreateUpdateRequest extends FormRequest
             $data['status'] = Article::STATUS_DRAFT;
             $data['published_at'] = null;
         }
+
         if ($this->file('image')) {
             $data['image'] = $this->file('image')->store('articles');
             if (!empty($this->x1)) {
@@ -80,19 +85,32 @@ class ArticlesCreateUpdateRequest extends FormRequest
                 $image->crop($start, $size)->save($path);
             }
         }
+
         if (is_null($id)) {
             $article = request()->user()->articles()->create($data);
         }
         else {
             $article = $this->article->update($data, $id);
         }
+
+        $this->syncTags($article);
+    }
+
+    /**
+     * @author MY
+     * @param Article $article
+     */
+    protected function syncTags($article): void
+    {
         $tags_id = [];
+
         foreach ($this->tags_id as $id) {
             if (!ctype_digit($id)) {
                 $id = $this->tag->updateOrCreate(['name' => $id])->id;
             }
             array_push($tags_id, $id);
         }
+
         $article->tags()->sync($tags_id);
     }
 }
