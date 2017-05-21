@@ -52,3 +52,18 @@ $factory->define(App\Entities\Article::class, function (Faker\Generator $faker) 
         'status' => App\Entities\Article::STATUS_PUBLISHED
     ];
 });
+
+$factory->define(App\Entities\BookAuthor::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name
+    ];
+});
+
+$factory->define(App\Entities\Book::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->sentence,
+        'description' => $faker->text,
+        'link' => $faker->url,
+        'image' => $faker->image()
+    ];
+});

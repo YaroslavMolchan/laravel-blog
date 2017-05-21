@@ -112,7 +112,4 @@ class ArticlesTest extends DuskTestCase
                 ->assertSee($replyComment);
         });
     }
-
-
-
 }
