@@ -1,11 +1,7 @@
 @extends('layouts.main')
 
 @section('main')
-	@forelse($books as $book)
-        @include('books.partials.book')
-    @empty
-        Книги не найдены
-    @endforelse
+    @each('books.partials.book', $books, 'book', 'layouts.empty')
     <hr>
     {!! $books->links() !!}
 @endsection
