@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Criteria\Articles\MainCriteria;
+use App\Criteria\Articles\PublishedCriteria;
 use App\Criteria\Articles\SortByTagCriteria;
 use App\Repositories\ArticleRepository;
 
@@ -28,7 +28,7 @@ class TagsController extends Controller
      */
     public function show($id)
     {
-        $this->articles->pushCriteria(MainCriteria::class);
+        $this->articles->pushCriteria(PublishedCriteria::class);
         $this->articles->pushCriteria(new SortByTagCriteria($id));
         $articles = $this->articles->paginate(10);
 

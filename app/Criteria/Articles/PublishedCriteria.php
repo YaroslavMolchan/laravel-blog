@@ -8,10 +8,10 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class MainCriteria
+ * Class PublishedCriteria
  * @package namespace App\Criteria;
  */
-class MainCriteria implements CriteriaInterface
+class PublishedCriteria implements CriteriaInterface
 {
     /**
      * Apply criteria in query repository

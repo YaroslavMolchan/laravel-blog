@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Criteria\Articles\MainCriteria;
+use App\Criteria\Articles\PublishedCriteria;
 use App\Criteria\Articles\SearchCriteria;
-use App\Entities\Article;
 use App\Http\Requests\ArticlesCreateUpdateRequest;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
+use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
@@ -27,18 +27,18 @@ class ArticlesController extends Controller
      */
     private $tags;
 
-    public function __construct(ArticleRepository $articles, CategoryRepository $categories, TagRepository $tags)
+    public function __construct(Container $container)
     {
-        $this->articles = $articles;
-        $this->categories = $categories;
-        $this->tags = $tags;
+        $this->articles = $container->make(ArticleRepository::class);
+        $this->categories = $container->make(CategoryRepository::class);
+        $this->tags = $container->make(TagRepository::class);
 
         $this->middleware('auth')->only(['create', 'update']);
     }
 
     public function index()
     {
-        $this->articles->pushCriteria(MainCriteria::class);
+        $this->articles->pushCriteria(PublishedCriteria::class);
         $articles = $this->articles->paginate(10);
 
         return view('articles.index', compact('articles'));
@@ -47,7 +47,7 @@ class ArticlesController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $this->articles->pushCriteria(MainCriteria::class);
+        $this->articles->pushCriteria(PublishedCriteria::class);
         $this->articles->pushCriteria(new SearchCriteria($query));
         $articles = $this->articles->paginate(10);
 

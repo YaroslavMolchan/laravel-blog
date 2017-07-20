@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Events\CommentCreate;
 use App\Repositories\ArticleRepository;
 use App\Repositories\ArticlesCommentRepository;
 use Illuminate\Foundation\Http\FormRequest;
@@ -60,6 +61,7 @@ class CommentsCreateRequest extends FormRequest
 
     public function persist() {
         $article = $this->article->find($this->article_id);
+
         $data = [
             'name' => $this->name,
             'email' => $this->email,
@@ -67,17 +69,15 @@ class CommentsCreateRequest extends FormRequest
             'ip' => ip2long($this->ip()),
             'ua' => $this->header('User-Agent')
         ];
-        if (!empty($this->comment_id)) {
-            $comment = $this->comments->findWhere([
-                'article_id' => $this->article_id,
-                'id' => $this->comment_id
-            ])->first();
 
-            if (!is_null($comment)) {
-                $data['parent_id'] = $this->comment_id;
-            }
+        if (!empty($this->comment_id) && $article->comments()->where('id', $this->comment_id)->exists()) {
+            $data['parent_id'] = $this->comment_id;
         }
-        $article->comments()->create($data);
+
+        $comment = $article->comments()->create($data);
+
+        event(new CommentCreate($comment));
+
         return $article;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Criteria\Articles\MainCriteria;
+use App\Criteria\Articles\PublishedCriteria;
 use App\Criteria\Articles\SortByCategoryCriteria;
 use App\Criteria\FilterCriteria;
 use App\Http\Requests\CategoriesUpdateRequest;
@@ -45,7 +45,7 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $this->articles->pushCriteria(MainCriteria::class);
+        $this->articles->pushCriteria(PublishedCriteria::class);
         $this->articles->pushCriteria(new SortByCategoryCriteria($id));
         $articles = $this->articles->paginate(10);
 

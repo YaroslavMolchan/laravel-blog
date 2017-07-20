@@ -27,7 +27,7 @@ class BooksController extends Controller
     public function __construct(Container $container)
     {
         $this->books = $container->make(BookRepository::class);
-        $this->books = $container->make(BookAuthorRepository::class);
+        $this->authors = $container->make(BookAuthorRepository::class);
 
         $this->middleware('auth')->only(['create']);
     }

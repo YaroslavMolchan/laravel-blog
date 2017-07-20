@@ -29,7 +29,7 @@
 
     <!-- Comment form
     ================================================== -->
-    <form action="/comments" class="row" method="POST" id="comments-form">
+    <form action="{{ route('comments.store') }}" class="row" method="POST" id="comments-form">
         {{ csrf_field() }}
         <input type="hidden" name="article_id" value="{!! $article->id !!}">
         <input type="hidden" name="comment_id">

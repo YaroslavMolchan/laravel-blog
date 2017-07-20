@@ -17,7 +17,7 @@ class ArticlesComment extends Model
         'parent_id'
     ];
 
-	public function aricle()
+	public function article()
     {
         return $this->belongsTo(Article::class);
     }

@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@push('meta')
+	<meta name="description" content="{!! $article->short_description !!}">
+	<meta name="keywords" content="{!! implode(' ', $article->tags->pluck('name')->toArray()) !!}">
+@endpush
+
 @section('content')
 <article class="post single-post text-post">
  	@if($article->image)
@@ -24,10 +29,10 @@
 
 	<div class="entry-content">
 		{!! $article->description !!}
-		<hr>
-		<p>Категория: <a href="{!! route('categories.show', ['id' => $article->category->id]) !!}"><i>{{ $article->category->name }}</i></a></p>
+		<hr class="article-footer">
+		<p class="article-category">Категория: <a href="{!! route('categories.show', ['id' => $article->category->id]) !!}"><i>{{ $article->category->name }}</i></a></p>
 		@if($article->tags()->count() > 0)
-			<p>
+			<p class="article-tags">
 				Теги: 
 				@foreach($article->tags as $tag)
 					<a href="{!! route('tags.show', ['id' => $tag->id]) !!}"><i>{{ $tag->name }}</i></a>
@@ -74,7 +79,7 @@
 	                processData: false
 	            })
 	            .done(function(response) {
-	                if (response.ok == true) {
+	                if (response.ok === true) {
 	                    $(document).find('#comments').replaceWith(response.view);
 					}
 					else {
@@ -82,14 +87,37 @@
 					}
 	            })
 	            .fail(function(response) {
-	            	console.log(response);
 	            	 $(this).find('.help-block').html('');
 	                 $.each(response.responseJSON, function(field, value) {
                          $(this).find('[name="' + field + '"] + .help-block').html(value);
 	                 }.bind(this));
 	            });
-				
 			});
+
+            $(document).on('click', '#comments .delete', function(event) {
+                event.preventDefault();
+
+                if (confirm('Удалить комментарий') === true) {
+                    $.ajax({
+                        url: $(this).attr('rel'),
+                        type: 'POST',
+                        data: {'_method' : 'DELETE'},
+                        dataType: 'json',
+                        context: this
+                    })
+                    .done(function(response) {
+                        if (response.ok === true) {
+                            $(this).closest('.comment').parent('li').remove();
+                        }
+                        else {
+                            alert('Can`t delete file');
+                        }
+                    })
+                    .fail(function(response) {
+                        alert('Unknown error');
+                    });
+                }
+            });
 		});
 	</script>
 @endpush

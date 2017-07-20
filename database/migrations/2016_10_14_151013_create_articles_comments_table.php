@@ -25,9 +25,9 @@ class CreateArticlesCommentsTable extends Migration
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
 
-            $table->foreign('article_id')->references('id')->on('articles');
+            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
 
-            $table->foreign('parent_id')->references('id')->on('articles_comments');
+            $table->foreign('parent_id')->references('id')->on('articles_comments')->onDelete('cascade');
 		});
 	}
 
