@@ -55,6 +55,7 @@
 @endpush
 
 @push('scripts')
+	<script type="text/javascript" src="/js/clipboard.min.js"></script>
 	<script type="text/javascript" src="/js/prism.js"></script>
 	<script>
 		$(function(){
