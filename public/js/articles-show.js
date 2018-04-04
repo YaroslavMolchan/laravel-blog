@@ -1,6 +1,6 @@
-(function(){
+(function () {
     var ArticleShow = {
-        init: function() {
+        init: function () {
             this.commentFormSelector = $('#comments-form');
             this.commentForm = $(this.commentFormSelector);
             this.commentSubmitButton = this.commentForm.find('button[type=submit]');
@@ -9,11 +9,11 @@
             this.bindEvents();
         },
 
-        bindEvents: function() {
+        bindEvents: function () {
             this.commentForm.on('submit', $.proxy(this.sendCommentRequest, this));
         },
 
-        sendCommentRequest:function(event) {
+        sendCommentRequest: function (event) {
             event.preventDefault();
 
             this.commentSubmitButton.prop('disabled', true).html('Ожидайте...');
@@ -29,18 +29,29 @@
                 contentType: false,
                 processData: false
             })
-            .done(function() {
-                this.commentForm[0].submit();
-            })
-            .fail(function(response) {
-            	this.commentSubmitButton.prop('disabled', false).html(this.commentSubmitButtonValue);
-            	this.commentForm.find('.help-block').html('');
-                $.each(response.responseJSON, function(field, value) {
-                	this.commentForm.find('.field-' + field + ' .help-block').html(value);
-                }.bind(this));
-            });
+                .done(function () {
+                    this.commentForm[0].submit();
+                })
+                .fail(function (response) {
+                    this.commentSubmitButton.prop('disabled', false).html(this.commentSubmitButtonValue);
+                    this.commentForm.find('.help-block').html('');
+                    $.each(response.responseJSON, function (field, value) {
+                        this.commentForm.find('.field-' + field + ' .help-block').html(value);
+                    }.bind(this));
+                });
         }
     }
 
     ArticleShow.init();
+
+    $(document).on('click', '.reply', function (event) {
+        event.preventDefault();
+
+        $comment = $(this).closest('.comment');
+
+        $('#comments-form textarea').prepend($comment.find('.name').text() + ', ');
+        $('#comments-form .reply-field').val($(this).data('id'));
+
+        $('body').scrollTo('#comments-form');
+    });
 })();

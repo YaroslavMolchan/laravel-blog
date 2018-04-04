@@ -32,7 +32,7 @@
     <form action="{{ route('comments.store') }}" class="row" method="POST" id="comments-form">
         {{ csrf_field() }}
         <input type="hidden" name="article_id" value="{!! $article->id !!}">
-        <input type="hidden" name="comment_id">
+        <input type="hidden" class="reply-field" name="comment_id">
         <div class="span3">
             <label>Имя</label>
             <input type="text" name="name" placeholder="Ваше имя" />

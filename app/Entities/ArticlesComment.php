@@ -17,6 +17,11 @@ class ArticlesComment extends Model
         'parent_id'
     ];
 
+    public function avatar()
+    {
+        return 'http://www.gravatar.com/avatar/'.md5($this->email).'fs=50';
+    }
+
 	public function article()
     {
         return $this->belongsTo(Article::class);

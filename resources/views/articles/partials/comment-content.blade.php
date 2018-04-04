@@ -1,7 +1,7 @@
 <div class="comment">
-    <div class="avatar"><img src="http://www.gravatar.com/avatar/?d=mm&amp;s=50" alt="" /></div>
+    <div class="avatar"><img src="{{ $comment->avatar() }}" alt="" /></div>
     <div class="comment-meta">
-        <strong>{{ $comment->name }}</strong>
+        <strong class="name">{{ $comment->name }}</strong>
         <span class="date">
             {!! $comment->created_at->diffForHumans() !!}
         </span>
