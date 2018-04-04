@@ -46,6 +46,7 @@ class CommentCreatedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->from(['name' => 'Блог PHP-разработчика '])
             ->subject('Новый комментарий к блогу')
             ->greeting($this->comment->article->title)
             ->line("Пользователь {$this->comment->name} ({$this->comment->email}) оставил комментарий")
